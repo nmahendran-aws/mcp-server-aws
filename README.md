@@ -172,6 +172,70 @@ mcp-server/
 - [IAM_PERMISSIONS_GUIDE.md](IAM_PERMISSIONS_GUIDE.md) - Detailed IAM permissions required
 - [POSTMAN_GUIDE.md](POSTMAN_GUIDE.md) - Testing with Postman
 
+## Deployment Status
+
+### ✅ Successfully Deployed
+
+The MCP server has been deployed to AWS Bedrock Agentcore:
+
+- **Agent Name**: `mcp_server`
+- **Agent ARN**: `arn:aws:bedrock-agentcore:us-east-1:471727841202:runtime/mcp_server-6fH7Xm6UtL`
+- **Status**: Ready
+- **Endpoint**: `arn:aws:bedrock-agentcore:us-east-1:471727841202:runtime/mcp_server-6fH7Xm6UtL/runtime-endpoint/DEFAULT`
+- **Region**: us-east-1
+- **Build Time**: 1m 29s
+- **Deployed**: 2026-01-05 23:06:49 UTC
+
+View in AWS Console:
+- [Bedrock AgentCore](https://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/agentcore)
+- [GenAI Observability Dashboard](https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#gen-ai-observability/agent-core)
+
+### ⚠️ Known Issue: Authentication
+
+**Problem**: Invocation fails with 401 Unauthorized due to JWT audience claim mismatch.
+
+**Error Message**:
+```
+Claim 'aud' value mismatch with configuration.
+```
+
+**Root Cause**: The Cognito-generated JWT access token doesn't include an `aud` (audience) claim that matches the server's expected audience configuration.
+
+**Workaround Options**:
+
+1. **Configure Cognito Resource Server** (Recommended):
+   - Create a Resource Server in the Cognito User Pool
+   - Define custom scopes
+   - Update App Client to request tokens with proper audience
+
+2. **Use ID Token Instead of Access Token**:
+   - ID tokens automatically include `aud` claim set to `client_id`
+   - Modify authentication to use ID tokens
+
+3. **Adjust Server Configuration**:
+   - Update `.bedrock_agentcore.yaml` authorization config
+   - Redeploy with modified settings
+
+**Testing Status**:
+- ✅ Server deployment successful
+- ✅ Server status: Ready
+- ❌ Client authentication: Requires configuration fix
+- ❌ Tool invocation: Blocked by auth issue
+
+**Related Files**:
+- [`.bedrock_agentcore.yaml`](.bedrock_agentcore.yaml) - Server configuration
+- [`my_mcp_client_remote.py`](my_mcp_client_remote.py) - Python client (needs auth fix)
+- [`test_mcp_curl.sh`](test_mcp_curl.sh) - Direct HTTP test script
+
+## CloudWatch Logs
+
+View runtime logs:
+```bash
+aws logs tail /aws/bedrock-agentcore/runtimes/mcp_server-6fH7Xm6UtL-DEFAULT \
+  --log-stream-name-prefix "2026/01/05/[runtime-logs]" \
+  --follow
+```
+
 ## License
 
 ISC
