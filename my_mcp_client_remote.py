@@ -2,6 +2,7 @@ import asyncio
 import boto3
 import json
 import sys
+import traceback
 from boto3.session import Session
 
 from mcp import ClientSession
@@ -75,6 +76,8 @@ async def main():
 
     except Exception as e:
         print(f"❌ Error connecting to MCP server: {e}")
+        print("\nFull error details:")
+        traceback.print_exc()
         sys.exit(1)
 
 if __name__ == "__main__":

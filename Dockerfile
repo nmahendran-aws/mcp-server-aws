@@ -1,25 +1,40 @@
-# Stage 1: Build the application
-FROM node:20-alpine AS builder
-
+FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm install
+# Configure UV for container environment
+ENV UV_SYSTEM_PYTHON=1 UV_COMPILE_BYTECODE=1
 
-RUN npm install typescript -g
 
+
+COPY requirements.txt requirements.txt
+# Install from requirements file
+RUN uv pip install -r requirements.txt
+
+
+
+
+RUN uv pip install aws-opentelemetry-distro>=0.10.1
+
+
+# Set AWS region environment variable
+
+ENV AWS_REGION=us-east-1
+ENV AWS_DEFAULT_REGION=us-east-1
+
+
+# Signal that this is running in Docker for host binding logic
+ENV DOCKER_CONTAINER=1
+
+# Create non-root user
+RUN useradd -m -u 1000 bedrock_agentcore
+USER bedrock_agentcore
+
+EXPOSE 8080
+EXPOSE 8000
+
+# Copy entire project (respecting .dockerignore)
 COPY . .
-RUN npm run build
 
-# Stage 2: Create the production image
-FROM node:20-alpine
+# Use the full module path
 
-WORKDIR /app
-
-COPY --from=builder /app/package.json ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist 
-
-EXPOSE 8000 
-
-CMD ["node", "dist/index.js"] 
+CMD ["opentelemetry-instrument", "python", "-m", "dist.index"]
