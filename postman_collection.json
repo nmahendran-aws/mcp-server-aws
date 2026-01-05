@@ -1,0 +1,165 @@
+{
+    "info": {
+        "name": "MCP Server",
+        "description": "Collection for testing MCP Server endpoints",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "List All Tools",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Accept",
+                        "value": "application/json, text/event-stream",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"tools/list\",\n  \"id\": 1\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "http://localhost:3001/mcp",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3001",
+                    "path": [
+                        "mcp"
+                    ]
+                },
+                "description": "Lists all available tools in the MCP server"
+            }
+        },
+        {
+            "name": "Add Tool",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Accept",
+                        "value": "application/json, text/event-stream",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"add\",\n    \"arguments\": {\n      \"a\": 5,\n      \"b\": 3\n    }\n  },\n  \"id\": 2\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "http://localhost:3001/mcp",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3001",
+                    "path": [
+                        "mcp"
+                    ]
+                },
+                "description": "Calls the add tool to sum two numbers"
+            }
+        },
+        {
+            "name": "Subtract Tool",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Accept",
+                        "value": "application/json, text/event-stream",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"subtract\",\n    \"arguments\": {\n      \"a\": 10,\n      \"b\": 4\n    }\n  },\n  \"id\": 3\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "http://localhost:3001/mcp",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3001",
+                    "path": [
+                        "mcp"
+                    ]
+                },
+                "description": "Calls the subtract tool to subtract two numbers"
+            }
+        },
+        {
+            "name": "Greeting Tool",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json",
+                        "type": "text"
+                    },
+                    {
+                        "key": "Accept",
+                        "value": "application/json, text/event-stream",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"greetingPrompt\",\n    \"arguments\": {\n      \"name\": \"John\"\n    }\n  },\n  \"id\": 4\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "http://localhost:3001/mcp",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3001",
+                    "path": [
+                        "mcp"
+                    ]
+                },
+                "description": "Calls the greeting tool to generate a personalized greeting"
+            }
+        }
+    ]
+}

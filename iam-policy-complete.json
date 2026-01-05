@@ -1,0 +1,38 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "CognitoUserPoolManagement",
+            "Effect": "Allow",
+            "Action": [
+                "cognito-idp:CreateUserPool",
+                "cognito-idp:CreateUserPoolClient",
+                "cognito-idp:AdminCreateUser",
+                "cognito-idp:AdminSetUserPassword",
+                "cognito-idp:InitiateAuth"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "IAMRoleManagement",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:PutRolePolicy",
+                "iam:DeleteRolePolicy",
+                "iam:ListRolePolicies",
+                "iam:GetRole"
+            ],
+            "Resource": "arn:aws:iam::*:role/agentcore-*"
+        },
+        {
+            "Sid": "STSGetCallerIdentity",
+            "Effect": "Allow",
+            "Action": [
+                "sts:GetCallerIdentity"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
